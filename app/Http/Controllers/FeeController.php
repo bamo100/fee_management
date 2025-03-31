@@ -21,10 +21,7 @@ class FeeController extends Controller
     public function index(): View
     {
         // dd('Hello');
-        $fees = Fee::with(['academicSession', 'department', 'faculty', 'category', 'level', 'entryMode'])->paginate(10); // Paginate with 10 items per page
-        // $fees = Fee::all();
-        //$fees = Fee::with(['academicSession', 'department', 'faculty', 'category', 'level', 'entryMode'])->get();
-        //$fees = Fee::orderBy('created_at')->orderBy('id')->cursorPaginate(15);
+        $fees = Fee::with(['academicSession', 'department', 'faculty', 'category', 'level', 'entryMode'])->paginate(10); 
         return view('fees.index', compact('fees'));
     }
 
@@ -32,85 +29,6 @@ class FeeController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('fees.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'academic_session_id' => 'required|exists:academic_sessions,id',
-            'department_id' => 'required|exists:departments,id',
-            'faculty_id' => 'required|exists:faculties,id',
-            'category_id' => 'required|exists:categories,id',
-            'level_id' => 'required|exists:levels,id',
-            'entry_mode_id' => 'required|exists:entry_modes,id',
-            'amount' => 'required|numeric|min:0',
-            'payment_start_date' => 'required|date',
-            'payment_close_date' => 'required|date|after_or_equal:payment_start_date',
-        ]);
-
-        Fee::create($validated);
-
-        return redirect()->route('fees.index')->with('success', 'Fee created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Fee $fee)
-    {
-        return view('fees.show', compact('fee'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Fee $fee)
-    {
-        return view('fees.edit', compact('fee'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Fee $fee): RedirectResponse
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'academic_session_id' => 'required|exists:academic_sessions,id',
-            'department_id' => 'required|exists:departments,id',
-            'faculty_id' => 'required|exists:faculties,id',
-            'category_id' => 'required|exists:categories,id',
-            'level_id' => 'required|exists:levels,id',
-            'entry_mode_id' => 'required|exists:entry_modes,id',
-            'amount' => 'required|numeric|min:0',
-            'payment_start_date' => 'required|date',
-            'payment_close_date' => 'required|date|after_or_equal:payment_start_date',
-        ]);
-  
-        $fee->update($validated);
-  
-        return redirect()->route('fees.index')->with('success', 'Fee updated successfully.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Fee $fee): RedirectResponse
-    {
-        $fee->delete();
-
-        return redirect()->route('fees.index')->with('success', 'Fee deleted successfully.');
-    }
-
-    public function createFee()
     {
         $departments = Department::all()->map(function ($department) {
             return [
@@ -156,4 +74,88 @@ class FeeController extends Controller
 
         return view('fees.create', compact('departments', 'academic_sessions', 'entry_modes', 'categories', 'faculties', 'levels'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'academic_session_id' => 'required|exists:academic_sessions,id',
+            'department_id' => 'required|exists:departments,id',
+            'faculty_id' => 'required|exists:faculties,id',
+            'category_id' => 'required|exists:categories,id',
+            'level_id' => 'required|exists:levels,id',
+            'entry_mode_id' => 'required|exists:entry_modes,id',
+            'amount' => 'required|numeric|min:0',
+            'payment_start_date' => 'required|date',
+            'payment_close_date' => 'required|date|after_or_equal:payment_start_date',
+        ]);
+
+        // If it's a Precognitive request, return a 204 response (no content)
+        if ($request->isPrecognitive()) {
+            return response()->noContent();
+        }
+
+        Fee::create($validated);
+
+        return redirect()->route('fees.index')->with('success', 'Fee created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Fee $fee)
+    {
+        return view('fees.show', compact('fee'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Fee $fee)
+    {
+        return view('fees.edit', compact('fee'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Fee $fee): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'academic_session_id' => 'required|exists:academic_sessions,id',
+            'department_id' => 'required|exists:departments,id',
+            'faculty_id' => 'required|exists:faculties,id',
+            'category_id' => 'required|exists:categories,id',
+            'level_id' => 'required|exists:levels,id',
+            'entry_mode_id' => 'required|exists:entry_modes,id',
+            'amount' => 'required|numeric|min:0',
+            'payment_start_date' => 'required|date',
+            'payment_close_date' => 'required|date|after_or_equal:payment_start_date',
+        ]);
+
+        if ($request->isPrecognitive()) {
+            return response()->noContent();
+        }
+  
+        $fee->update($validated);
+  
+        return redirect()->route('fees.index')->with('success', 'Fee updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Fee $fee): RedirectResponse
+    {
+        $fee->delete();
+
+        return redirect()->route('fees.index')->with('success', 'Fee deleted successfully.');
+    }
+
 }

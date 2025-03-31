@@ -52,7 +52,7 @@
             </div>
         </form>
     </div> --}}
-
+    {{-- action="{{ route('fees.store') }}" method="POST" --}}
     <div class="container">
         <h2>Create New Fee</h2>
         <form x-data="feeForm()" @submit.prevent="submitForm">
@@ -61,7 +61,7 @@
             <!-- Name -->
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" x-model="form.name" class="form-control" @change="validateField('name')">
+                <input type="text" id="name" x-model="form.name" class="form-control w-full" @change="validateField('name')">
                 <div x-show="errors.name" x-text="errors.name" class="text-danger"></div>
             </div>
 
@@ -164,6 +164,41 @@
             <button type="submit" class="btn btn-primary w-[20%] h-11 rounded-full text-white bg-zinc-900">Create Fee</button>
         </form>
     </div>
+    <script>
+        function feeForm() {
+            return {
+                form: {
+                    name: '',
+                    description: '',
+                    amount: '',
+                    payment_start_date: '',
+                    payment_close_date: '',
+                },
+                errors: {},
+                async validateField(field) {
+                    try {
+                        const response = await fetch('{{ route('fees.store') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Precognition': 'true', // This triggers Precognition
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({ [field]: this.form[field] }),
+                        });
 
+                        if (response.ok) {
+                            this.errors[field] = null; // Clear errors if validation passes
+                        } else {
+                            const data = await response.json();
+                            this.errors[field] = data.errors[field]?.[0] || 'Invalid input';
+                        }
+                    } catch (error) {
+                        console.error('Validation error:', error);
+                    }
+                },
+            };
+        }
+    </script>
 </x-guest-layout>
     

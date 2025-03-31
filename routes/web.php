@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AcademicSessionController;
+use App\Http\Controllers\StudentController;
 
 Route::get('/', fn() => view('index', [
     'photo_url' => App\Models\User::query()->first()?->media->last()->original_url ?? 'default_image_url',
@@ -24,20 +25,20 @@ Route::middleware('auth')->group(function (): void {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
+//fee controller
 Route::resource('fees', FeeController::class)->only([
-    'index', 'store', 'update', 'destroy', 'show', 'create', 'edit',
+    'index', 'destroy', 'show', 'create', 'edit',
 ]);
-Route::get('fees/create', [FeeController::class, 'createFee'])->name('fees.create');
-//Route::get('fees/create-fee', [DepartmentController::class, 'createFee'])->name('fees.create-fee');
 
+Route::middleware([HandlePrecognitiveRequests::class])->group(function () {
+    Route::post('fees', [FeeController::class, 'store'])->name('fees.store');
+    Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
+});
 
-// Route::middleware([HandlePrecognitiveRequests::class])->group(function () {
-//     Route::post('/fees', [FeeController::class, 'store']);
-//     Route::put('/fees/{fee}', [FeeController::class, 'update']);
-//     // Add other routes as needed
-// });
-
+//student controller
+Route::resource('students', StudentController::class)->only([
+    'index',
+]);
 
 Route::post('upload', FileUploadController::class)->name('upload-file');
 

@@ -23,52 +23,52 @@ class DepartmentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function createFee()
-    {
-        $departments = Department::all()->map(function ($department) {
-            return [
-                'value' => $department->id,
-                'label' => $department->department_name,
-            ];
-        })->toArray();
+    // public function createFee()
+    // {
+    //     $departments = Department::all()->map(function ($department) {
+    //         return [
+    //             'value' => $department->id,
+    //             'label' => $department->department_name,
+    //         ];
+    //     })->toArray();
 
-        $academic_sessions = Academic_Session::all()->map(function ($academic_session) {
-            return [
-                'value' => $academic_session->id,
-                'label' => $academic_session->session_name,
-            ];
-        })->toArray();
+    //     $academic_sessions = Academic_Session::all()->map(function ($academic_session) {
+    //         return [
+    //             'value' => $academic_session->id,
+    //             'label' => $academic_session->session_name,
+    //         ];
+    //     })->toArray();
 
-        $entry_modes = Entry_Mode::all()->map(function ($entry_mode) {
-            return [
-                'value' => $entry_mode->id,
-                'label' => $entry_mode->mode_name,
-            ];
-        })->toArray();
+    //     $entry_modes = Entry_Mode::all()->map(function ($entry_mode) {
+    //         return [
+    //             'value' => $entry_mode->id,
+    //             'label' => $entry_mode->mode_name,
+    //         ];
+    //     })->toArray();
 
-        $categories = Category::all()->map(function ($category) {
-            return [
-                'value' => $category->id,
-                'label' => $category->name,
-            ];
-        })->toArray();
+    //     $categories = Category::all()->map(function ($category) {
+    //         return [
+    //             'value' => $category->id,
+    //             'label' => $category->name,
+    //         ];
+    //     })->toArray();
 
-        $faculties = Faculty::all()->map(function ($faculty) {
-            return [
-                'value' => $faculty->id,
-                'label' => $faculty->faculty_name,
-            ];
-        })->toArray();
+    //     $faculties = Faculty::all()->map(function ($faculty) {
+    //         return [
+    //             'value' => $faculty->id,
+    //             'label' => $faculty->faculty_name,
+    //         ];
+    //     })->toArray();
 
-        $levels = Level::all()->map(function ($level) {
-            return [
-                'value' => $level->id,
-                'label' => $level->level_name,
-            ];
-        })->toArray();
+    //     $levels = Level::all()->map(function ($level) {
+    //         return [
+    //             'value' => $level->id,
+    //             'label' => $level->level_name,
+    //         ];
+    //     })->toArray();
 
-        return view('fees.create-fee.index', compact('departments', 'academic_sessions', 'entry_modes', 'categories', 'faculties', 'levels'));
-    }
+    //     return view('fees.create-fee.index', compact('departments', 'academic_sessions', 'entry_modes', 'categories', 'faculties', 'levels'));
+    // }
 
     /**
      * Store a newly created resource in storage.

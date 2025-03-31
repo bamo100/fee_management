@@ -21,15 +21,15 @@
                 <x-main-link href="#">
                     {{ __('Services') }}
                 </x-main-link> --}}
-                <x-main-link :href="route('contact')" :active="request()->routeIs('contact')">
-                    {{ __('Contact') }}
+                <x-main-link :href="route('students.index')" :active="request()->routeIs('contact')">
+                    {{ __('Students') }}
                 </x-main-link>
                  <!-- Create Fee Button -->
                 <x-main-link :href="route('fees.index')">
                     {{ __('View Fee') }}
                 </x-main-link>
 
-                <x-main-link :href="route('fees.create-fee')">
+                <x-main-link :href="route('fees.create')">
                     {{ __('Create Fee') }}
                 </x-main-link>
 
