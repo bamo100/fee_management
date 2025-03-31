@@ -33,12 +33,18 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
         $this->configureModels();
         $this->configureDates();
-        $this->configureUrls();
+        // $this->configureUrls();
         $this->configureVite();
         $this->configurePasswordValidation();
         $this->registerBlueprintMacros();
         $this->configureRelationMorphMaps();
         $this->disableCSRFProtection();
+
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        } else {
+            URL::forceScheme('http');
+        }
     }
 
     /**
@@ -73,10 +79,11 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Configure the application's URLs.
      */
-    private function configureUrls(): void
-    {
-        URL::forceScheme(scheme: 'https');
-    }
+    // private function configureUrls(): void
+    // {
+    //     URL::forceScheme(scheme: 'https');
+    // }
+  
 
     /**
      * Configure the application's Vite instance.

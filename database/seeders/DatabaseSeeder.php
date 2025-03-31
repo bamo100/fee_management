@@ -21,5 +21,14 @@ final class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $this->call(AcademicSessionsTableSeeder::class);
+        $this->call(CategoriesTableSeeder::class);
+        $this->call(EntryModesTableSeeder::class);
+        $this->call(DepartmentsTableSeeder::class);
+        $this->call(FacultiesTableSeeder::class);
+        $this->call(FeeSeeder::class);
+        $this->call(StudentsTableSeeder::class);
+        $this->call(StudentsFeesSeeder::class);
     }
 }

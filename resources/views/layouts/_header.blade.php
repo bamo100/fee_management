@@ -15,15 +15,28 @@
             </a>
 
             <div class="flex space-x-6">
-                <x-main-link href="#">
+                {{-- <x-main-link href="#">
                     {{ __('Products') }}
                 </x-main-link>
                 <x-main-link href="#">
                     {{ __('Services') }}
-                </x-main-link>
+                </x-main-link> --}}
                 <x-main-link :href="route('contact')" :active="request()->routeIs('contact')">
                     {{ __('Contact') }}
                 </x-main-link>
+                 <!-- Create Fee Button -->
+                <x-main-link :href="route('fees.index')">
+                    {{ __('View Fee') }}
+                </x-main-link>
+
+                <x-main-link :href="route('fees.create-fee')">
+                    {{ __('Create Fee') }}
+                </x-main-link>
+
+                <!-- Edit Fee Button -->
+                {{-- <x-main-link :href="route('fees.update', ['fee' => $fee->id])">
+                    {{ __('Edit Fee') }}
+                </x-main-link> --}}
             </div>
 
             <div class="flex space-x-6">
