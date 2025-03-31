@@ -1,67 +1,11 @@
 <x-guest-layout>
-    {{-- <div x-data="{
-        form: $form('post', '{{ route('fees.store') }}', {
-            name: '',
-            description: '',
-            amount: '',
-            payment_start_date: '',
-            payment_close_date: '',
-            // Include other necessary fields
-        }),
-    }">
-        <form @submit.prevent="form.submit()">
-            @csrf
-            <!-- Name Field -->
-            <div>
-                <label for="name">Name</label>
-                <input id="name" type="text" x-model="form.name" @change="form.validate('name')">
-                <span x-text="form.errors.name" class="text-red-500"></span>
-            </div>
-    
-            <!-- Description Field -->
-            <div>
-                <label for="description">Description</label>
-                <textarea id="description" x-model="form.description" @change="form.validate('description')"></textarea>
-                <span x-text="form.errors.description" class="text-red-500"></span>
-            </div>
-    
-            <!-- Amount Field -->
-            <div>
-                <label for="amount">Amount</label>
-                <input id="amount" type="number" step="0.01" x-model="form.amount" @change="form.validate('amount')">
-                <span x-text="form.errors.amount" class="text-red-500"></span>
-            </div>
-    
-            <!-- Payment Start Date Field -->
-            <div>
-                <label for="payment_start_date">Payment Start Date</label>
-                <input id="payment_start_date" type="date" x-model="form.payment_start_date" @change="form.validate('payment_start_date')">
-                <span x-text="form.errors.payment_start_date" class="text-red-500"></span>
-            </div>
-    
-            <!-- Payment Close Date Field -->
-            <div>
-                <label for="payment_close_date">Payment Close Date</label>
-                <input id="payment_close_date" type="date" x-model="form.payment_close_date" @change="form.validate('payment_close_date')">
-                <span x-text="form.errors.payment_close_date" class="text-red-500"></span>
-            </div>
-    
-            <!-- Submit Button -->
-            <div>
-                <button type="submit" :disabled="form.processing">Save Fee</button>
-            </div>
-        </form>
-    </div> --}}
-
-    <!-- resources/views/fees/index.blade.php -->
-
-
     {{-- @section('content') --}}
     <div class="container">
         <h2>Fees List</h2>
        <table class="table-auto border border-gray-300 border-collapse w-full">
             <thead>
                 <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">#</th>
                     <th class="border border-gray-300 px-4 py-2">Name</th>
                     <th class="border border-gray-300 px-4 py-2">Description</th>
                     <th class="border border-gray-300 px-4 py-2">Academic Session</th>
@@ -77,8 +21,12 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $serialNumber = 0; // Initialize the counter
+                @endphp
                 @foreach($fees as $fee)
                     <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ ++$serialNumber }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $fee->name }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $fee->description }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ $fee->academicSession?->session_name ?? 'N/A' }}</td>
@@ -91,12 +39,12 @@
                         <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($fee->payment_start_date)->format('d-m-Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($fee->payment_close_date)->format('d-m-Y') }}</td>
                         <td class="border border-gray-300 px-4 py-2">
-                            <a href="{{ route('fees.show', $fee->id) }}" class="btn btn-info btn-sm">View</a>
-                            <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                            <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" style="display:inline;">
+                            <a href="{{ route('fees.show', $fee->id) }}" class="btn btn-info btn-sm text-green-600">View</a>
+                            <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-primary btn-sm text-blue-600">Edit</a>
+                            <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" style="display:inline; color: red;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this fee?');">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm text-red-500" onclick="return confirm('Are you sure you want to delete this fee?');">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -110,5 +58,5 @@
         </div>
     </div>
     {{-- @endsection --}}
-
+    
 </x-guest-layout>

@@ -17,6 +17,7 @@ return new class () extends Migration {
             $table->char(column: 'key', length: 36)->unique();
             $table->string(column: 'last_name', length: 20);
             $table->string(column: 'first_name', length: 20);
+            $table->string(column: 'name', length: 20)->nullable();
             $table->string(column: 'other_name', length: 20)->nullable();
             $table->whenSQlite(
                 fn($table) => $table->string('full_name')

@@ -11,8 +11,16 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $studentFees = Student_fee::with(['student', 'fee'])->cursorPaginate(20); // 10 items per page
-        return view('students.index', compact('studentFees'));
+        $studentFees = Student_fee::select('id', 'student_id', 'fee_id', 'amount_due', 'amount_paid', 'balance', 'status', 'payment_due_date') // Ensure 'id' is included
+        ->with(['student', 'fee'])
+        ->orderBy('id')
+        ->cursorPaginate(20);
+
+        $startingSerialNumber = request()->has('cursor') 
+        ? (int) request()->query('serial', 0) 
+        : 0;
+
+        return view('students.index', compact('studentFees', 'startingSerialNumber'));
     }
 
     /**

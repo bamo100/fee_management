@@ -3,7 +3,7 @@
 <x-guest-layout>
     <div class="container">
         <h1>Student Fees</h1>
-        <<table class="table-auto border border-gray-300 border-collapse w-full">
+        <table class="table-auto border border-gray-300 border-collapse w-full">
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border border-gray-300 px-4 py-2">#</th>
@@ -18,7 +18,8 @@
             </thead>
             <tbody>
                 @php
-                    $serialNumber = 0; // Initialize the counter
+                    $serialNumber = $startingSerialNumber; 
+                    // $serialNumber = 0; // Initialize the counter
                 @endphp
                 @foreach ($studentFees as $fee)
                     <tr>
@@ -37,7 +38,8 @@
 
         <!-- Pagination Links -->
         <div class="d-flex justify-content-center">
-            {{ $studentFees->links() }}
+            {{-- {{ $studentFees->links() }} --}}
+            {{ $studentFees->appends(['serial' => $serialNumber])->links() }}
         </div>
     </div>
 </x-guest-layout>

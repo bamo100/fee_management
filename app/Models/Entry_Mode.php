@@ -22,6 +22,8 @@ class Entry_Mode extends Model
 
     protected $keyType = 'string';
 
+    protected $table = 'entry_modes';
+
     public $incrementing = false;
 
     protected $fillable = ['mode_name'];

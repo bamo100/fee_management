@@ -27,8 +27,9 @@ final class DatabaseSeeder extends Seeder
         $this->call(EntryModesTableSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
         $this->call(FacultiesTableSeeder::class);
-        $this->call(FeeSeeder::class);
+        $this->call(LevelsTableSeeder::class);
         $this->call(StudentsTableSeeder::class);
-        $this->call(StudentsFeesSeeder::class);
+        $this->call(FeeSeeder::class);
+        $this->call(StudentFeesSeeder::class);
     }
 }

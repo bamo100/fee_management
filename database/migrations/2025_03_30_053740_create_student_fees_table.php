@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('fee_id')->constrained('fees', 'id')->cascadeOnDelete();
             $table->decimal('amount_due');
             $table->decimal('amount_paid');
-            $table->decima('balance');
+            $table->decimal('balance');
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->date('payment_due_date');
             $table->timestamps();
