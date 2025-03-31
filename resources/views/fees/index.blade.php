@@ -59,38 +59,38 @@
     {{-- @section('content') --}}
     <div class="container">
         <h2>Fees List</h2>
-        <table class="table">
+       <table class="table-auto border border-gray-300 border-collapse w-full">
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Academic Session</th>
-                    <th>Department</th>
-                    <th>Faculty</th>
-                    <th>Category</th>
-                    <th>Level</th>
-                    <th>Entry Mode</th>
-                    <th>Amount</th>
-                    <th>Payment Start Date</th>
-                    <th>Payment Close Date</th>
-                    <th>Actions</th>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Description</th>
+                    <th class="border border-gray-300 px-4 py-2">Academic Session</th>
+                    <th class="border border-gray-300 px-4 py-2">Department</th>
+                    <th class="border border-gray-300 px-4 py-2">Faculty</th>
+                    <th class="border border-gray-300 px-4 py-2">Category</th>
+                    <th class="border border-gray-300 px-4 py-2">Level</th>
+                    <th class="border border-gray-300 px-4 py-2">Entry Mode</th>
+                    <th class="border border-gray-300 px-4 py-2">Amount</th>
+                    <th class="border border-gray-300 px-4 py-2">Payment Start Date</th>
+                    <th class="border border-gray-300 px-4 py-2">Payment Close Date</th>
+                    <th class="border border-gray-300 px-4 py-2">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($fees as $fee)
                     <tr>
-                        <td>{{ $fee->name }}</td>
-                        <td>{{ $fee->description }}</td>
-                        <td>{{ $fee->academicSession?->session_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->department?->department_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->faculty?->faculty_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->category?->name ?? 'N/A' }}</td>
-                        <td>{{ $fee->level?->level_name ?? 'N/A' }}</td>
-                        <td>{{ $fee->entryMode?->mode_name ?? 'N/A' }}</td>
-                        <td>{{ number_format($fee->amount, 2) }}</td>
-                        <td>{{ \Carbon\Carbon::parse($fee->payment_start_date)->format('d-m-Y') }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->description }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->academicSession?->session_name ?? 'N/A' }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->department?->department_name ?? 'N/A' }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->faculty?->faculty_name ?? 'N/A' }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->category?->name ?? 'N/A' }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->level?->level_name ?? 'N/A' }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $fee->entryMode?->mode_name ?? 'N/A' }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ number_format($fee->amount, 2) }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ \Carbon\Carbon::parse($fee->payment_start_date)->format('d-m-Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($fee->payment_close_date)->format('d-m-Y') }}</td>
-                        <td>
+                        <td class="border border-gray-300 px-4 py-2">
                             <a href="{{ route('fees.show', $fee->id) }}" class="btn btn-info btn-sm">View</a>
                             <a href="{{ route('fees.edit', $fee->id) }}" class="btn btn-primary btn-sm">Edit</a>
                             <form action="{{ route('fees.destroy', $fee->id) }}" method="POST" style="display:inline;">
