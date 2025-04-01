@@ -80,6 +80,7 @@ class FeeController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -101,6 +102,16 @@ class FeeController extends Controller
 
         Fee::create($validated);
 
+        if ($request->wantsJson()) {
+            $fees = Fee::all(); 
+            $view = view('fees.index', compact('fees'))->render();
+    
+            return response()->json([
+                'message' => 'Fee created successfully.',
+                'view' => $view,
+            ], 201);
+        }
+
         return redirect()->route('fees.index')->with('success', 'Fee created successfully.');
     }
 
@@ -117,7 +128,49 @@ class FeeController extends Controller
      */
     public function edit(Fee $fee)
     {
-        return view('fees.edit', compact('fee'));
+        $departments = Department::all()->map(function ($department) {
+            return [
+                'value' => $department->id,
+                'label' => $department->department_name,
+            ];
+        })->toArray();
+
+        $academic_sessions = Academic_Session::all()->map(function ($academic_session) {
+            return [
+                'value' => $academic_session->id,
+                'label' => $academic_session->session_name,
+            ];
+        })->toArray();
+
+        $entry_modes = Entry_Mode::all()->map(function ($entry_mode) {
+            return [
+                'value' => $entry_mode->id,
+                'label' => $entry_mode->mode_name,
+            ];
+        })->toArray();
+
+        $categories = Category::all()->map(function ($category) {
+            return [
+                'value' => $category->id,
+                'label' => $category->name,
+            ];
+        })->toArray();
+
+        $faculties = Faculty::all()->map(function ($faculty) {
+            return [
+                'value' => $faculty->id,
+                'label' => $faculty->faculty_name,
+            ];
+        })->toArray();
+
+        $levels = Level::all()->map(function ($level) {
+            return [
+                'value' => $level->id,
+                'label' => $level->level_name,
+            ];
+        })->toArray();
+
+        return view('fees.edit', compact('fee', 'departments', 'academic_sessions', 'entry_modes', 'categories', 'faculties', 'levels'));
     }
 
     /**

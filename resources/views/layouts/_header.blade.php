@@ -63,14 +63,16 @@
             >
                 <h2 class="sr-only">Mobile Menu</h2>
                 <div class="flex flex-col text-lg space-y-1">
-                    <x-main-link href="#">
-                        {{ __('Products') }}
+                    <x-main-link :href="route('students.index')" :active="request()->routeIs('contact')">
+                        {{ __('Students') }}
                     </x-main-link>
-                    <x-main-link href="#">
-                        {{ __('Services') }}
+                     <!-- Create Fee Button -->
+                    <x-main-link :href="route('fees.index')">
+                        {{ __('View Fee') }}
                     </x-main-link>
-                    <x-main-link :href="route('contact')" :active="request()->routeIs('contact')">
-                        {{ __('Contact') }}
+    
+                    <x-main-link :href="route('fees.create')">
+                        {{ __('Create Fee') }}
                     </x-main-link>
                 </div>
                 <span class="inline-flex self-center items-center text-sm py-4 divide-x space-x-2 text-gray-600 dark:text-gray-100">

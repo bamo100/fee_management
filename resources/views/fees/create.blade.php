@@ -1,58 +1,4 @@
 <x-guest-layout>
-    {{-- <div x-data="{
-        form: $form('post', '{{ route('fees.store') }}', {
-            name: '',
-            description: '',
-            amount: '',
-            payment_start_date: '',
-            payment_close_date: '',
-            // Include other necessary fields
-        }),
-    }">
-        <form @submit.prevent="form.submit()">
-            @csrf
-            <!-- Name Field -->
-            <div>
-                <label for="name">Name</label>
-                <input id="name" type="text" x-model="form.name" @change="form.validate('name')">
-                <span x-text="form.errors.name" class="text-red-500"></span>
-            </div>
-    
-            <!-- Description Field -->
-            <div>
-                <label for="description">Description</label>
-                <textarea id="description" x-model="form.description" @change="form.validate('description')"></textarea>
-                <span x-text="form.errors.description" class="text-red-500"></span>
-            </div>
-    
-            <!-- Amount Field -->
-            <div>
-                <label for="amount">Amount</label>
-                <input id="amount" type="number" step="0.01" x-model="form.amount" @change="form.validate('amount')">
-                <span x-text="form.errors.amount" class="text-red-500"></span>
-            </div>
-    
-            <!-- Payment Start Date Field -->
-            <div>
-                <label for="payment_start_date">Payment Start Date</label>
-                <input id="payment_start_date" type="date" x-model="form.payment_start_date" @change="form.validate('payment_start_date')">
-                <span x-text="form.errors.payment_start_date" class="text-red-500"></span>
-            </div>
-    
-            <!-- Payment Close Date Field -->
-            <div>
-                <label for="payment_close_date">Payment Close Date</label>
-                <input id="payment_close_date" type="date" x-model="form.payment_close_date" @change="form.validate('payment_close_date')">
-                <span x-text="form.errors.payment_close_date" class="text-red-500"></span>
-            </div>
-    
-            <!-- Submit Button -->
-            <div>
-                <button type="submit" :disabled="form.processing">Save Fee</button>
-            </div>
-        </form>
-    </div> --}}
-    {{-- action="{{ route('fees.store') }}" method="POST" --}}
     <div class="container">
         <h2>Create New Fee</h2>
         <form x-data="feeForm()" @submit.prevent="submitForm">
@@ -60,16 +6,26 @@
 
             <!-- Name -->
             <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" x-model="form.name" class="form-control w-full" @change="validateField('name')">
-                <div x-show="errors.name" x-text="errors.name" class="text-danger"></div>
+                <x-input
+                    label="Name"
+                    type="text"
+                    id="amount"
+                    model="form.name"
+                    validation="validateField"
+                    errorKey="name"
+                />
             </div>
 
             <!-- Description -->
             <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea id="description" x-model="form.description" class="form-control" @change="validateField('description')"></textarea>
-                <div x-show="errors.description" x-text="errors.description" class="text-danger"></div>
+                <x-textarea-input
+                    label="Description"
+                    id="description"
+                    model="form.description"
+                    validation="validateField"
+                    errorKey="description"
+                    rows="5"
+                />
             </div>
 
             <!-- Academic Session -->
@@ -135,35 +91,46 @@
                     name="entry_mode_id"
                     x_model="form.entry_mode_id"
                     formContext="true"
-
                 />
             </div>
 
             <!-- Amount -->
             <div class="mb-3">
-                <label for="amount" class="form-label">Amount</label>
-                <input type="number" id="amount" x-model="form.amount" class="form-control" @change="validateField('amount')">
-                <div x-show="errors.amount" x-text="errors.amount" class="text-danger"></div>
+                <x-input
+                    label="Amount"
+                    type="number"
+                    id="amount"
+                    model="form.amount"
+                    validation="validateField"
+                    errorKey="amount"
+                />
             </div>
 
             <!-- Payment Start Date -->
             <div class="mb-3">
-                <label for="payment_start_date" class="form-label">Payment Start Date</label>
-                <input type="text" id="payment_start_date" x-model="form.payment_start_date" class="form-control">
-                <div x-show="errors.payment_start_date" x-text="errors.payment_start_date" class="text-danger"></div>
+                <x-flatpickr
+                    label="Payment Start Date"
+                    name="payment_start_date"
+                    x_model="form.payment_start_date"
+                    formContext="true"
+                />
             </div>
 
             <!-- Payment Close Date -->
             <div class="mb-3">
-                <label for="payment_close_date" class="form-label">Payment Close Date</label>
-                <input type="text" id="payment_close_date" x-model="form.payment_close_date" class="form-control">
-                <div x-show="errors.payment_close_date" x-text="errors.payment_close_date" class="text-danger"></div>
+                <x-flatpickr
+                    label="Payment Close Date"
+                    name="payment_close_date"
+                    x_model="form.payment_close_date"
+                    formContext="true"
+                />
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-[20%] h-11 rounded-full text-white bg-zinc-900">Create Fee</button>
+            <button type="submit" class="btn btn-primary w-[20%] h-11 rounded-full text-white bg-zinc-900 cursor-pointer hover:bg-blue-700">Create Fee</button>
         </form>
     </div>
+    
     <script>
         function feeForm() {
             return {
@@ -195,6 +162,30 @@
                         }
                     } catch (error) {
                         console.error('Validation error:', error);
+                    }
+                },
+                async submitForm() {
+                    console.log(this.form); 
+                    try {
+                        const response = await fetch('{{ route('fees.store') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify(this.form),
+                        });
+
+                        if (response.ok) {
+                            console.log('Form submitted successfully');
+                            alert('Fee created successfully!');
+                            window.location.href = '{{ route('fees.index') }}'; 
+                        } else {
+                            const data = await response.json();
+                            this.errors = data.errors || {};
+                        }
+                    } catch (error) {
+                        console.error('Submission error:', error);
                     }
                 },
             };
