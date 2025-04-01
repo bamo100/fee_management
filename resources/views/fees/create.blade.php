@@ -148,14 +148,14 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Precognition': 'true', // This triggers Precognition
+                                'Precognition': 'true', 
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
                             body: JSON.stringify({ [field]: this.form[field] }),
                         });
 
                         if (response.ok) {
-                            this.errors[field] = null; // Clear errors if validation passes
+                            this.errors[field] = null; 
                         } else {
                             const data = await response.json();
                             this.errors[field] = data.errors[field]?.[0] || 'Invalid input';

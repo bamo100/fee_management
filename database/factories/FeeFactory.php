@@ -27,7 +27,7 @@ class FeeFactory extends Factory
         return [
             'id' => Str::uuid(),
             // 'name' => $this->faker->word,
-            'name' => $this->faker->randomElement([
+            'name' => $this->faker->unique()->randomElement([
                 'Lab Fee',
                 'Tuition Fee',
                 'X-ray Fee',
@@ -43,8 +43,8 @@ class FeeFactory extends Factory
             'level_id' => Level::inRandomOrder()->first()->id ?? Level::factory(),
             'entry_mode_id' => Entry_Mode::inRandomOrder()->first()->id ?? Entry_Mode::factory(),
             'amount' => $this->faker->randomFloat(2, 1000, 10000),
-            'payment_start_date' => $this->faker->date,
-            'payment_close_date' => $this->faker->date,
+            'payment_start_date' => $this->faker->dateTimeBetween('-3 months', 'now'),
+            'payment_close_date' => $this->faker->dateTimeBetween('now', '+3 months'),
         ];
     }
 }

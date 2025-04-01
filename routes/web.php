@@ -33,6 +33,7 @@ Route::resource('fees', FeeController::class)->only([
 Route::middleware([HandlePrecognitiveRequests::class])->group(function () {
     Route::post('fees', [FeeController::class, 'store'])->name('fees.store');
     Route::put('fees/{fee}', [FeeController::class, 'update'])->name('fees.update');
+
 });
 
 //student controller

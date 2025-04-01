@@ -178,26 +178,36 @@ class FeeController extends Controller
      */
     public function update(Request $request, Fee $fee): RedirectResponse
     {
+        \Log::info('Update method called for Fee ID: ' . $fee->id);
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'academic_session_id' => 'required|exists:academic_sessions,id',
-            'department_id' => 'required|exists:departments,id',
-            'faculty_id' => 'required|exists:faculties,id',
-            'category_id' => 'required|exists:categories,id',
-            'level_id' => 'required|exists:levels,id',
-            'entry_mode_id' => 'required|exists:entry_modes,id',
-            'amount' => 'required|numeric|min:0',
-            'payment_start_date' => 'required|date',
-            'payment_close_date' => 'required|date|after_or_equal:payment_start_date',
+            'academic_session_id' => 'sometimes|required|exists:academic_sessions,id',
+            'department_id' => 'sometimes|required|exists:departments,id',
+            'faculty_id' => 'sometimes|required|exists:faculties,id',
+            'category_id' => 'sometimes|required|exists:categories,id',
+            'level_id' => 'sometimes|required|exists:levels,id',
+            'entry_mode_id' => 'sometimes|required|exists:entry_modes,id',
+            'amount' => 'sometimes|required|numeric|min:0',
+            'payment_start_date' => 'sometimes|required|date',
+            'payment_close_date' => 'sometimes|required|date|after_or_equal:payment_start_date',
         ]);
 
+        \Log::info('Request Data: ', $request->all());
         if ($request->isPrecognitive()) {
             return response()->noContent();
         }
-  
+
+        // if ($request->isMethod('put')) {
+        //     $fee->update($validated);
+        //     return response()->json(['message' => 'Fee updated successfully.', 'fee' => $fee]);
+        // }
+    
+        // return response()->json(['error' => 'Invalid request method.'], 405);
+        \Log::info('Update the table.');
         $fee->update($validated);
-  
+        \Log::info('Fee updated successfully.');
+        // return response()->json(['message' => 'Fee updated successfully.', 'fee' => $fee]);
         return redirect()->route('fees.index')->with('success', 'Fee updated successfully.');
     }
 
